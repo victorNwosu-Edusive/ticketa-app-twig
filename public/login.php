@@ -25,12 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user) {
         $_SESSION['user'] = ['id' => $user['id'], 'name' => $user['name'], 'email' => $user['email']];
-        $toast = ['message' => '✅ Login successful! Redirecting...', 'type' => 'success'];
+        $toast = ['message' => '☑ Login successful! Redirecting...', 'type' => 'success'];
         echo "<script>
                 setTimeout(() => window.location.href = '/dashboard.php', 2000);
               </script>";
     } else {
-        $toast = ['message' => '❌ Invalid email or password.', 'type' => 'error'];
+        $toast = ['message' => '⚠ Invalid credentials. Try again.', 'type' => 'error'];
     }
 }
 

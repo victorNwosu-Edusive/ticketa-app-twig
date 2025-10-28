@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $id = $_POST['id'];
         $tickets = array_filter($tickets, fn($t) => $t['id'] !== $id);
         file_put_contents($ticketsFile, json_encode(array_values($tickets), JSON_PRETTY_PRINT));
-        $toast = ['message' => '✅ Ticket deleted successfully!', 'type' => 'success'];
+        $toast = ['message' => 'Ticket deleted', 'type' => 'success'];
     }
 }
 

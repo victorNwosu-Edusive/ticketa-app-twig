@@ -20,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $exists = array_filter($users, fn($u) => $u['email'] === $email);
 
         if ($exists) {
-            $toast = ['message' => '❌ Email already exists.', 'type' => 'error'];
+            $toast = ['message' => '⚠ Email already exists.', 'type' => 'error'];
         } else {
             $users[] = ['id' => uniqid(), 'name' => $name, 'email' => $email, 'password' => $password];
             file_put_contents($dataFile, json_encode($users, JSON_PRETTY_PRINT));
-            $toast = ['message' => '✅ Signup successful! Redirecting to login...', 'type' => 'success'];
+            $toast = ['message' => '☑ Signup successful! Redirecting to login...', 'type' => 'success'];
 
             echo "<script>
                     setTimeout(() => window.location.href = '/login.php', 2000);
