@@ -21,3 +21,4 @@ EXPOSE 10000
 
 # Start the built-in PHP server from the public folder
 CMD ["php", "-S", "0.0.0.0:10000", "-t", "public"]
+ 
