@@ -1,0 +1,72 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+{% include 'partials/navbar.twig' %}
+
+{% if toast %}
+  {% include 'components/toast.html.twig' with { toast: toast } %}
+{% endif %}
+
+<div class="max-w-[1440px] mx-auto px-6 py-10">
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-extrabold mb-2">Ticket Management</h1>
+      <p class="text-gray-500">View and manage support tickets</p>
+    </div>
+    <a href="/create-ticket.php" class="text-[13px] md:text-[15px] bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+      + Create Ticket
+    </a>
+  </div>
+
+  {% if tickets|length > 0 %}
+    <div class="grid gap-4">
+      {% for ticket in tickets %}
+        <div class="bg-white border-[1px] rounded-2xl shadow p-6 flex flex-col md:flex-row md:items-center md:justify-between">
+          <div class="flex-1">
+            <div class="flex items-start gap-4">
+              <div class="flex-1">
+                <p class="font-extrabold">{{ ticket.title }}</p>
+                <p class="text-sm text-gray-500">{{ ticket.description }}</p>
+                <div class="mt-2 flex items-center gap-2">
+                  <span class="px-2 py-1 rounded-full text-xs
+                    {% if ticket.status == 'open' %} text-green-800 bg-green-100
+                    {% elseif ticket.status == 'in_progress' %} text-amber-800 bg-amber-100
+                    {% elseif ticket.status == 'closed' %} text-gray-700 bg-gray-100
+                    {% endif %}">
+                    {{ ticket.status|replace({'_': ' '})|capitalize }}
+                  </span>
+                  <span class="text-xs text-gray-400">Created: {{ ticket.createdAt }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 md:mt-0 md:ml-6 flex items-center gap-2">
+            <a href="/edit-ticket.php?id={{ ticket.id }}" class="px-3 py-1 text-[12px] md:text-[14px] border border-gray-300 rounded-md flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+              Edit
+            </a>
+            <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this ticket?');">
+              <input type="hidden" name="action" value="delete">
+              <input type="hidden" name="id" value="{{ ticket.id }}">
+              <button type="submit" class="px-3 py-1 text-[12px] md:text-[14px] bg-red-500 text-white rounded-md hover:bg-red-600 transition">
+                Delete
+              </button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-16">
+      <p class="text-gray-500 text-lg">No tickets yet.</p>
+      <a href="/create-ticket.php" class="text-blue-600 hover:underline mt-4 inline-block">
+        Create your first ticket
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

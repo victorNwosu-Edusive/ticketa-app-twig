@@ -1,0 +1,98 @@
+<nav class="w-full border-b bg-white relative z-50">
+  <div class="max-w-[1440px] mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/">
+      <img src="/images/ticketa-blue.png" class="h-7 w-auto" alt="Ticketa logo">
+    </a>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex items-center gap-4">
+      <a href="/dashboard.php" class="text-[12px] md:text-sm hover:underline">
+        Dashboard
+      </a>
+      <a href="/tickets.php" class="text-[12px] md:text-sm hover:underline">
+        Tickets
+      </a>
+      <a href="/logout.php" class="ml-4 flex items-center justify-center gap-3 bg-red-500 text-[12px] md:text-sm text-white px-3 py-2 rounded-md hover:bg-red-600">
+        Logout
+        <!-- SVG LogOut icon -->
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Mobile Hamburger Button -->
+    <button
+      class="md:hidden focus:outline-none relative focus:bg-slate-300 hover:bg-slate-300 duration-100 ease-in w-6 h-6 z-50 mobile-menu-btn"
+      onclick="toggleMobileMenu()"
+    >
+      <span class="hamburger-line hamburger-line-1 block absolute w-6 h-0.5 bg-black transition-transform duration-300" style="top: 4px;"></span>
+      <span class="hamburger-line hamburger-line-2 block absolute w-6 h-0.5 bg-black transition-opacity duration-300" style="top: 11px;"></span>
+      <span class="hamburger-line hamburger-line-3 block absolute w-6 h-0.5 bg-black transition-transform duration-300" style="top: 18px;"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Dropdown Menu -->
+  <div
+    id="mobileMenu"
+    class="mobile-menu md:hidden bg-white border-t shadow-md absolute top-full left-0 w-full overflow-hidden transition-all duration-300 ease-out"
+    style="max-height: 0;"
+  >
+    <div class="flex flex-col items-center py-4 space-y-2">
+      <a
+        href="/dashboard.php"
+        onclick="toggleMobileMenu()"
+        class="w-full p-3 text-center hover:bg-slate-50 text-sm"
+      >
+        Dashboard
+      </a>
+      <a
+        href="/tickets.php"
+        onclick="toggleMobileMenu()"
+        class="w-full p-3 text-center hover:bg-slate-50 text-sm"
+      >
+        Tickets
+      </a>
+      <a
+        href="/logout.php"
+        class="bg-red-500 flex items-center justify-center gap-3 text-sm text-white px-4 py-2 rounded-md hover:bg-red-600 w-fit"
+      >
+        Logout
+        <!-- SVG LogOut icon -->
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  let isMobileMenuOpen = false;
+
+  function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const lines = document.querySelectorAll('.hamburger-line');
+    
+    isMobileMenuOpen = !isMobileMenuOpen;
+    
+    if (isMobileMenuOpen) {
+      // Open menu
+      mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+      lines[0].style.transform = 'rotate(45deg) translateY(9px)';
+      lines[1].style.opacity = '0';
+      lines[2].style.transform = 'rotate(-45deg) translateY(-9px)';
+    } else {
+      // Close menu
+      mobileMenu.style.maxHeight = '0';
+      lines[0].style.transform = 'translateY(0) rotate(0deg)';
+      lines[1].style.opacity = '1';
+      lines[2].style.transform = 'translateY(0) rotate(0deg)';
+    }
+  }
+</script>
