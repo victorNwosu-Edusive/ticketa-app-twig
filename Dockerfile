@@ -1,37 +1,33 @@
-# Use the official PHP 8.4 image with Apache
-FROM php:8.4-apache
+# Use official PHP + Apache image
+FROM php:8.2-apache
 
-# Install system dependencies
+# Install dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
-    git unzip libzip-dev && \
-    docker-php-ext-install pdo pdo_mysql zip && \
-    a2enmod rewrite
+    git unzip libzip-dev zip && \
+    docker-php-ext-install pdo pdo_mysql
+
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy project files
-COPY . .
+# Copy composer files first (for caching)
+COPY composer.json composer.lock ./
 
 # Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
+    rm composer-setup.php
 
-# Install PHP dependencies
+# Install dependencies (this fixes your issue)
 RUN composer install --no-dev --optimize-autoloader
 
-# Change Apache DocumentRoot to /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
+# Copy the rest of the project
+COPY . .
 
-# Also update directory permissions in Apache config
-RUN echo '<Directory /var/www/html/public>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' > /etc/apache2/conf-available/ticketa.conf && \
-    a2enconf ticketa
-
-# Set permissions for Apache
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html
 
 # Expose port 80
 EXPOSE 80
